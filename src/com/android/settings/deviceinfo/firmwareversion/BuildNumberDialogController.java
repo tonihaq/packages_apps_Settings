@@ -22,6 +22,8 @@ import android.text.BidiFormatter;
 
 import com.android.settings.R;
 
+import com.android.settings.deviceinfo.DeviceModelPreferenceController;
+
 public class BuildNumberDialogController {
 
     @VisibleForTesting
@@ -37,7 +39,10 @@ public class BuildNumberDialogController {
      * Updates the build number to the dialog.
      */
     public void initialize() {
-        mDialog.setText(BUILD_NUMBER_VALUE_ID,
-                BidiFormatter.getInstance().unicodeWrap(Build.DISPLAY));
+        StringBuilder sb = new StringBuilder();
+        sb.append(BidiFormatter.getInstance().unicodeWrap(Build.DISPLAY));
+        sb.append("\n");
+        sb.append(DeviceModelPreferenceController.getDeviceModel());
+        mDialog.setText(BUILD_NUMBER_VALUE_ID, sb.toString());
     }
 }
