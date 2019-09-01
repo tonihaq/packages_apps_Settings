@@ -18,47 +18,55 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.text.TextUtils;
 
-import com.android.settings.DisplaySettings;
-import com.android.settings.core.TogglePreferenceController;
+import android.support.v14.preference.SwitchPreference;
+import android.support.v7.preference.Preference;
 import com.android.settings.search.DatabaseIndexingUtils;
 import com.android.settings.search.InlineSwitchPayload;
 import com.android.settings.search.ResultPayload;
+import com.android.settings.core.TogglePreferenceController;
 import com.android.settings.R;
 
 import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE;
 import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
 import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
 
-
 public class AutoBrightnessPreferenceController extends TogglePreferenceController {
 
     private final String SYSTEM_KEY = SCREEN_BRIGHTNESS_MODE;
     private final int DEFAULT_VALUE = SCREEN_BRIGHTNESS_MODE_MANUAL;
+
+    private static final String KEY_AUTO_BRIGHTNESS = "auto_brightness";
 
     public AutoBrightnessPreferenceController(Context context, String key) {
         super(context, key);
     }
 
     @Override
-    public boolean isChecked() {
-        return Settings.System.getInt(mContext.getContentResolver(),
-                SYSTEM_KEY, DEFAULT_VALUE) != DEFAULT_VALUE;
+    public String getPreferenceKey() {
+        return KEY_AUTO_BRIGHTNESS;
     }
 
     @Override
-    public boolean setChecked(boolean isChecked) {
-        Settings.System.putInt(mContext.getContentResolver(), SYSTEM_KEY,
-                isChecked ? SCREEN_BRIGHTNESS_MODE_AUTOMATIC : DEFAULT_VALUE);
-        return true;
-    }
-
-    @Override
-    @AvailabilityStatus
-    public int getAvailabilityStatus() {
+    public boolean isAvailable() {
         return mContext.getResources().getBoolean(
                 com.android.internal.R.bool.config_automatic_brightness_available)
                 ? AVAILABLE
                 : UNSUPPORTED_ON_DEVICE;
+    }
+
+    @Override
+    public void updateState(Preference preference) {
+        int value = Settings.Secure.getInt(
+                mContext.getContentResolver(), SYSTEM_KEY, DEFAULT_VALUE);
+        ((SwitchPreference) preference).setChecked(value != DEFAULT_VALUE);
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        boolean value = (Boolean) newValue;
+        Settings.Secure.putInt(
+                mContext.getContentResolver(), SYSTEM_KEY, value ? SCREEN_BRIGHTNESS_MODE_AUTOMATIC : DEFAULT_VALUE);
+        return true;
     }
 
     @Override
