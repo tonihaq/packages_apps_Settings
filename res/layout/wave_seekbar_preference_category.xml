@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="63dp"
+    android:layout_gravity="center"
+    android:orientation="horizontal"
+    android:paddingStart="64dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/headerimage"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_settings_brightness_header" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <SeekBar
+            android:id="@+id/seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="0dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:thumb="@drawable/ic_brightness_thumb" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/endimage"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_marginEnd="18dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_settings_brightness_end" />
+    </LinearLayout>
+</LinearLayout>
